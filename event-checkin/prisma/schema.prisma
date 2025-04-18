@@ -1,0 +1,48 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Evento {
+  id          Int           @id @default(autoincrement())
+  nome        String
+  data        DateTime
+  hora_inicio String
+  hora_fim    String
+  local       String
+  capacidade  Int
+  participantes Participante[]
+  checkins    Checkin[]
+}
+
+model Participante {
+  id       Int      @id @default(autoincrement())
+  nome     String
+  email    String?
+  telefone String?
+  evento   Evento   @relation(fields: [eventoId], references: [id])
+  eventoId Int
+  checkins Checkin[]
+}
+
+model Checkin {
+  id             Int      @id @default(autoincrement())
+  participante   Participante @relation(fields: [participanteId], references: [id])
+  participanteId Int
+  evento         Evento       @relation(fields: [eventoId], references: [id])
+  eventoId       Int
+  hora_entrada   DateTime
+  hora_saida     DateTime?
+  status         Status
+}
+
+enum Status {
+  pendente
+  presente
+  saiu
+}
