@@ -1,10 +1,13 @@
-import { prisma } from '@/lib/db';
+import { PrismaClient } from '@prisma/client'
 import { NextResponse } from 'next/server';
 
-export async function GET() {
-  const eventos = await prisma.evento.findMany({
-    include: { participantes: true, checkins: true }
-  });
+const prisma = new PrismaClient()
 
-  return NextResponse.json(eventos);
+export async function GET() {
+  try {
+    const eventos = await prisma.evento.findMany();
+    return NextResponse.json(eventos);
+  } catch (error) {
+    return NextResponse.json({ error: 'Erro ao buscar eventos' }, { status: 500 });
+  }
 }
