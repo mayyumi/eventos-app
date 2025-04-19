@@ -6,7 +6,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./banco.db" // ou ajuste o caminho conforme o local do seu .db
+  url      = "file:../banco.db" // ou ajuste o caminho conforme o local do seu .db
 }
 
 model Evento {
@@ -19,6 +19,7 @@ model Evento {
   capacidade  Int
   participantes Participante[]
   checkins    Checkin[]
+  @@map("eventos")
 }
 
 model Participante {
@@ -29,16 +30,17 @@ model Participante {
   evento_id   Int
   evento      Evento   @relation(fields: [evento_id], references: [id])
   checkins    Checkin[]
+    @@map("participantes")
 }
 
 model Checkin {
   id              Int      @id @default(autoincrement())
   participante_id Int
   evento_id       Int
-  hora_entrada    String
-  hora_saida      String?
+  hora_entrada   DateTime
+  hora_saida   DateTime?
   status          String
-
+    @@map("checkins")
   participante Participante @relation(fields: [participante_id], references: [id])
   evento       Evento       @relation(fields: [evento_id], references: [id])
 }
