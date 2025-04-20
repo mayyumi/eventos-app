@@ -3,6 +3,7 @@
 
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+// import BootstrapTable from 'bootstrap';
 import Link from 'next/link'
 
 
@@ -22,6 +23,18 @@ export default function DashboardPage() {
     queryFn: async () => (await axios.get('/api/checkins')).data,
   })
 
+  const checkinsPresentes = checkins?.filter(
+    (checkin: { status: string }) => checkin.status === 'presente'
+  )
+
+  const checkouts = checkins?.filter(
+    (checkin: { status: string }) => checkin.status === 'saiu'
+  )
+
+  const pendentes = checkins?.filter(
+    (checkin: { status: string }) => checkin.status === 'pendente'
+  )
+
   return (
     <div className="p-4 space-y-6">
       <h1 className="text-2xl font-bold text-gray-700">Dashboard</h1>
@@ -30,9 +43,12 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card title="Total de Eventos" value={eventos?.length || 0} icon="bi-calendar-event" color="blue" />
         <Card title="Participantes" value={participantes?.length || 0} icon="bi-people" color="green" />
-        <Card title="Check-ins" value={checkins?.length || 0} icon="bi-check-circle" color="purple" />
-        {/* <Card title="Pendentes" value={60} icon="bi-hourglass-split" color="orange" /> */}
+        <Card title="Check-ins" value={checkinsPresentes?.length || 0} icon="bi-check-circle" color="purple" />
+        <Card title="Check-outs" value={checkouts?.length || 0} icon="bi-check-circle" color="purple" />
+        <Card title="Pendentes" value={pendentes?.length || 0} icon="bi-hourglass-split" color="orange" />
       </div>
+
+      {/* <BootstrapTable */}
 
       {/* Lista de eventos com responsividade */}
       <div className="space-y-4">
