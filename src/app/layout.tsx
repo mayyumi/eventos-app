@@ -1,5 +1,6 @@
 // src/app/layout.tsx
 import './globals.css'
+// import 'bootstrap/dist/css/bootstrap.min.css'
 import { ReactQueryProvider } from '@/lib/react-query-provider'
 
 export const metadata = {
