@@ -25,9 +25,10 @@ export default function EventoPage() {
 
   const { data: checkins } = useQuery({
     queryKey: ['checkins'],
-    queryFn: async () => (await axios.get('/api/checkins')).data,
+    queryFn: async () => (await axios.get(`/api/checkins/${id}`)).data,
   })
-  
+  console.log("checkins", checkins)
+
   if (loadingEvento || loadingParticipantes || !evento) {
     return <div className="p-4">Carregando...</div>
   }
